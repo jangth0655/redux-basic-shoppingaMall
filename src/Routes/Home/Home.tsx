@@ -1,7 +1,16 @@
+import { useRef } from "react";
 import Header from "../../components/Header/Header";
+import { useAppSelector } from "../../store";
 import "./Home.scss";
 
 const Home = () => {
+  const detailRef = useRef<HTMLDivElement>(null);
+  const items = useAppSelector((state) => state.itemSlice.data);
+  console.log(items);
+
+  const onClick = () => {
+    detailRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
   return (
     <>
       <Header />
@@ -11,7 +20,9 @@ const Home = () => {
           alt=""
         />
       </div>
-      <button className="more-btn">Learn more</button>
+      <button onClick={onClick} className="more-btn">
+        Learn more
+      </button>
     </>
   );
 };
