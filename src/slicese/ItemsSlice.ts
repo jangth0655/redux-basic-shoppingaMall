@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { getItems } from "../slicese/actions";
 
 export interface IGetItems {
@@ -10,6 +11,7 @@ export interface IGetItems {
 
 const initialState = {
   data: [] as IGetItems[],
+  isLoading: true,
 };
 
 const itemsSlice = createSlice({
@@ -17,9 +19,15 @@ const itemsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(getItems.pending, (state, action: PayloadAction<void>) => {
+      state.isLoading = true;
+    });
     builder.addCase(
       getItems.fulfilled,
-      (state, action: PayloadAction<IGetItems>) => {}
+      (state, action: PayloadAction<IGetItems[]>) => {
+        state.data.push(...action.payload);
+        state.isLoading = false;
+      }
     );
   },
 });
